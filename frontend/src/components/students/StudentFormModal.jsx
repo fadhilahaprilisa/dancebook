@@ -2,24 +2,24 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { X } from 'lucide-react';
 
-export default function StudentFormModal({ isOpen, initialData, onClose, onSubmit, kelasOptions }) {
+export default function StudentFormModal({ isOpen, initialData, onClose, onSubmit }) {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
-    defaultValues: { name: '', kelas: kelasOptions[0] },
+    defaultValues: { name: '', kelas: '' },
   });
 
   useEffect(() => {
     if (isOpen) {
       reset({
         name: initialData?.name || '',
-        kelas: initialData?.class || kelasOptions[0],
+        kelas: initialData?.kelas || '',
       });
     }
-  }, [isOpen, initialData, kelasOptions, reset]);
+  }, [isOpen, initialData, reset]);
 
   if (!isOpen) return null;
 
@@ -62,13 +62,22 @@ export default function StudentFormModal({ isOpen, initialData, onClose, onSubmi
             <label className="text-xs font-semibold text-on-surface-variant mb-1.5 block">
               Kelas
             </label>
-            <select className="input-base" {...register('kelas', { required: true })}>
-              {kelasOptions.map((kelas) => (
-                <option key={kelas} value={kelas}>
-                  Kelas {kelas}
-                </option>
-              ))}
-            </select>
+            <input
+              type="text"
+              className="input-base"
+              placeholder="Contoh: 1A, 2, 4B, 6"
+              {...register('kelas', {
+                required: 'Kelas wajib diisi',
+                pattern: {
+                  value: /^[1-6][A-Za-z]?$/,
+                  message: 'Format kelas tidak valid (contoh: 1, 1A, 4B)',
+                },
+              })}
+            />
+            {errors.kelas && <p className="mt-1 text-xs text-error">{errors.kelas.message}</p>}
+            <p className="mt-1 text-[11px] text-on-surface-variant">
+              Boleh angka saja (1–6) atau angka + huruf (mis. 1A, 4B) — bebas sesuai penamaan kelas di sekolah Anda.
+            </p>
           </div>
 
           <div className="flex gap-3 pt-2">

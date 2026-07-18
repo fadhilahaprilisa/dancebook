@@ -3,6 +3,7 @@ import { Plus, Search } from 'lucide-react';
 import Swal from 'sweetalert2';
 import StudentFormModal from '../components/students/StudentFormModal';
 import StudentClassGroup from '../components/students/StudentClassGroup';
+import { sortKelasList } from '../utils/sortKelas';
 import {
   getStudents,
   createStudent,
@@ -11,12 +12,10 @@ import {
   deleteStudent,
 } from '../services/studentService';
 
-const KELAS_OPTIONS = [1, 2, 3, 4, 5, 6];
-
 export default function DataMuridPage() {
   const [students, setStudents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('aktif'); // 'aktif' | 'arsip'
+  const [activeTab, setActiveTab] = useState('aktif');
   const [search, setSearch] = useState('');
   const [kelasFilter, setKelasFilter] = useState('semua');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,20 +32,22 @@ export default function DataMuridPage() {
     loadStudents();
   }, []);
 
+  const kelasList = useMemo(() => sortKelasList(students.map((s) => s.kelas)), [students]);
+
   const filteredStudents = useMemo(() => {
     return students.filter((s) => {
       const matchesTab = activeTab === 'aktif' ? s.status === 'aktif' : s.status !== 'aktif';
       const matchesSearch = s.name.toLowerCase().includes(search.toLowerCase());
-      const matchesKelas = kelasFilter === 'semua' || s.class === Number(kelasFilter);
+      const matchesKelas = kelasFilter === 'semua' || s.kelas === kelasFilter;
       return matchesTab && matchesSearch && matchesKelas;
     });
   }, [students, activeTab, search, kelasFilter]);
 
   const groupedByClass = useMemo(() => {
-    return KELAS_OPTIONS.map((kelas) => ({
+    return sortKelasList(filteredStudents.map((s) => s.kelas)).map((kelas) => ({
       kelas,
-      students: filteredStudents.filter((s) => s.class === kelas),
-    })).filter((group) => group.students.length > 0);
+      students: filteredStudents.filter((s) => s.kelas === kelas),
+    }));
   }, [filteredStudents]);
 
   const handleOpenAdd = () => {
@@ -101,23 +102,17 @@ export default function DataMuridPage() {
           </p>
         </div>
         {activeTab === 'aktif' && (
-          <button
-            onClick={handleOpenAdd}
-            className="btn-primary flex items-center gap-2 self-start md:self-auto"
-          >
+          <button onClick={handleOpenAdd} className="btn-primary flex items-center gap-2 self-start md:self-auto">
             <Plus className="w-4 h-4" /> Tambah Murid
           </button>
         )}
       </div>
 
-      {/* Tabs */}
       <div className="flex gap-2 bg-surface-container-low w-fit p-1 rounded-full">
         <button
           onClick={() => setActiveTab('aktif')}
           className={`px-4 py-2 text-xs font-bold rounded-full transition-all ${
-            activeTab === 'aktif'
-              ? 'bg-primary text-on-primary shadow-sm'
-              : 'text-on-surface-variant hover:text-primary'
+            activeTab === 'aktif' ? 'bg-primary text-on-primary shadow-sm' : 'text-on-surface-variant hover:text-primary'
           }`}
         >
           Murid Aktif
@@ -125,16 +120,13 @@ export default function DataMuridPage() {
         <button
           onClick={() => setActiveTab('arsip')}
           className={`px-4 py-2 text-xs font-bold rounded-full transition-all ${
-            activeTab === 'arsip'
-              ? 'bg-primary text-on-primary shadow-sm'
-              : 'text-on-surface-variant hover:text-primary'
+            activeTab === 'arsip' ? 'bg-primary text-on-primary shadow-sm' : 'text-on-surface-variant hover:text-primary'
           }`}
         >
           Arsip (Lulus & Keluar)
         </button>
       </div>
 
-      {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant" />
@@ -146,13 +138,9 @@ export default function DataMuridPage() {
             className="input-base pl-11"
           />
         </div>
-        <select
-          value={kelasFilter}
-          onChange={(e) => setKelasFilter(e.target.value)}
-          className="input-base sm:w-48"
-        >
+        <select value={kelasFilter} onChange={(e) => setKelasFilter(e.target.value)} className="input-base sm:w-48">
           <option value="semua">Semua Kelas</option>
-          {KELAS_OPTIONS.map((kelas) => (
+          {kelasList.map((kelas) => (
             <option key={kelas} value={kelas}>
               Kelas {kelas}
             </option>
@@ -160,7 +148,6 @@ export default function DataMuridPage() {
         </select>
       </div>
 
-      {/* List */}
       {isLoading ? (
         <div className="space-y-3">
           {[...Array(3)].map((_, i) => (
@@ -192,7 +179,6 @@ export default function DataMuridPage() {
         initialData={editingStudent}
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleSubmit}
-        kelasOptions={KELAS_OPTIONS}
       />
     </div>
   );

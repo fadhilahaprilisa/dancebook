@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+
+  /* ===== DanceBook Pastel Pink Palette ===== */
+  --color-primary: #E91E63;
+  --color-on-primary: #FFFFFF;
+  --color-primary-container: #F8BBD9;
+  --color-on-primary-container: #7A1438;
+  --color-primary-fixed: #F8BBD9;
+  --color-primary-fixed-dim: #F29FC4;
+  --color-on-primary-fixed: #5D0F2E;
+  --color-on-primary-fixed-variant: #7A1438;
+
+  --color-secondary: #C2185B;
+  --color-on-secondary: #FFFFFF;
+  --color-secondary-container: #FCE4EC;
+  --color-on-secondary-container: #7A1438;
+  --color-secondary-fixed: #FCE4EC;
+  --color-secondary-fixed-dim: #F8BBD9;
+  --color-on-secondary-fixed: #5D0F2E;
+  --color-on-secondary-fixed-variant: #7A1438;
+
+  --color-tertiary: #AD1457;
+  --color-on-tertiary: #FFFFFF;
+  --color-tertiary-container: #F8BBD9;
+  --color-on-tertiary-container: #7A1438;
+
+  --color-error: #BA1A1A;
+  --color-on-error: #FFFFFF;
+  --color-error-container: #FFDAD6;
+  --color-on-error-container: #93000A;
+
+  --color-background: #FFF8FB;
+  --color-on-background: #5D4A54;
+
+  --color-surface: #FFFFFF;
+  --color-on-surface: #5D4A54;
+  --color-surface-variant: #FCE4EC;
+  --color-on-surface-variant: #8C6B76;
+
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #FFF3F8;
+  --color-surface-container: #FCE4EC;
+  --color-surface-container-high: #F8D8E7;
+  --color-surface-container-highest: #F3D6E4;
+  --color-surface-bright: #FFF8FB;
+  --color-surface-dim: #F3D6E4;
+
+  --color-outline: #D89CB2;
+  --color-outline-variant: #F3D6E4;
+
+  --color-inverse-surface: #5D4A54;
+  --color-inverse-on-surface: #FFF8FB;
+  --color-inverse-primary: #F8BBD9;
+}
+
+@layer utilities {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(243, 214, 228, 0.6);
+    box-shadow: 0 10px 30px rgba(233, 30, 99, 0.08);
+  }
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #F3D6E4; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #E9A9C4; }

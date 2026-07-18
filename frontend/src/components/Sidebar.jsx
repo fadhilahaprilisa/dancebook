@@ -1,9 +1,16 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { NAV_ITEMS } from '../utils/navItems';
+import { logout } from '../services/authService';
 
 function SidebarContent({ onNavigate }) {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    onNavigate?.();
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <>
@@ -48,10 +55,7 @@ function SidebarContent({ onNavigate }) {
 
       <div className="p-4">
         <button
-          onClick={() => {
-            onNavigate?.();
-            navigate('/login');
-          }}
+          onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-sm font-medium text-primary hover:bg-primary/10 transition-colors"
         >
           <LogOut className="w-5 h-5" />

@@ -1,10 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { LogOut, ChevronRight } from 'lucide-react';
 import { NAV_ITEMS, MOBILE_PRIMARY_IDS } from '../utils/navItems';
+import { logout } from '../services/authService';
 
 export default function MorePage() {
   const navigate = useNavigate();
   const secondaryItems = NAV_ITEMS.filter((item) => !MOBILE_PRIMARY_IDS.includes(item.id));
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   return (
     <div className="md:hidden">
@@ -27,7 +33,7 @@ export default function MorePage() {
           );
         })}
         <button
-          onClick={() => navigate('/login')}
+          onClick={handleLogout}
           className="w-full flex items-center gap-3 px-4 py-4 text-sm font-medium text-primary hover:bg-primary/5 transition-colors"
         >
           <LogOut className="w-5 h-5" />

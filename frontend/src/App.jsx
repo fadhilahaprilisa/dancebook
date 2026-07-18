@@ -2,15 +2,25 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import ComingSoonPage from './pages/ComingSoonPage';
 import MorePage from './pages/More';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/Dashboard';
+import RequireAuth from './components/RequireAuth';
 
 function App() {
   return (
     <Routes>
-      <Route path="/login" element={<ComingSoonPage title="Login" tahap={2} />} />
+      <Route path="/login" element={<LoginPage />} />
 
-      <Route path="/" element={<MainLayout />}>
+      <Route
+        path="/"
+        element={
+          <RequireAuth>
+            <MainLayout />
+          </RequireAuth>
+        }
+      >
         <Route index element={<Navigate to="/dashboard" replace />} />
-        <Route path="dashboard" element={<ComingSoonPage title="Dashboard" tahap={3} />} />
+        <Route path="dashboard" element={<DashboardPage />} />
         <Route path="data-murid" element={<ComingSoonPage title="Data Murid" tahap={4} />} />
         <Route path="absensi" element={<ComingSoonPage title="Absensi" tahap={5} />} />
         <Route path="nilai-rapor" element={<ComingSoonPage title="Nilai Rapor" tahap={6} />} />

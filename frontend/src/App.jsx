@@ -4,6 +4,7 @@ import ComingSoonPage from './pages/ComingSoonPage';
 import MorePage from './pages/More';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/Dashboard';
+import DataMuridPage from './pages/DataMurid';
 import RequireAuth from './components/RequireAuth';
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
       >
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="data-murid" element={<ComingSoonPage title="Data Murid" tahap={4} />} />
+        <Route path="data-murid" element={<DataMuridPage />} />
         <Route path="absensi" element={<ComingSoonPage title="Absensi" tahap={5} />} />
         <Route path="nilai-rapor" element={<ComingSoonPage title="Nilai Rapor" tahap={6} />} />
         <Route path="dokumentasi" element={<ComingSoonPage title="Dokumentasi" tahap={7} />} />

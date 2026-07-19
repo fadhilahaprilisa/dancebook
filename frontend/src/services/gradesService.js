@@ -50,3 +50,8 @@ export async function saveStudentGrade(year, studentId, { grade, checklist }) {
   saveAll(all);
   return all[year][studentId];
 }
+
+export async function getAllGradeEntries() {
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  return loadAll();
+}

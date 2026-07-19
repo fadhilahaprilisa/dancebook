@@ -35,3 +35,8 @@ export async function getDatesWithAttendance() {
   const all = loadAll();
   return Object.keys(all).filter((date) => Object.keys(all[date] || {}).length > 0);
 }
+
+export async function getAllAttendanceEntries() {
+  await new Promise((resolve) => setTimeout(resolve, 200));
+  return loadAll();
+}

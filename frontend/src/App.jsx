@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import ComingSoonPage from './pages/ComingSoonPage';
 import MorePage from './pages/More';
 import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/Dashboard';
@@ -9,6 +8,8 @@ import AbsensiPage from './pages/Absensi';
 import NilaiRaporPage from './pages/NilaiRapor';
 import DokumentasiPage from './pages/Dokumentasi';
 import AgendaPage from './pages/Agenda';
+import DownloadCSVPage from './pages/DownloadCSV';
+import BackupPage from './pages/Backup';
 import RequireAuth from './components/RequireAuth';
 
 function App() {
@@ -31,8 +32,8 @@ function App() {
         <Route path="nilai-rapor" element={<NilaiRaporPage />} />
         <Route path="dokumentasi" element={<DokumentasiPage />} />
         <Route path="agenda" element={<AgendaPage />} />
-        <Route path="download-csv" element={<ComingSoonPage title="Download CSV" tahap={9} />} />
-        <Route path="backup" element={<ComingSoonPage title="Backup Database" tahap={9} />} />
+        <Route path="download-csv" element={<DownloadCSVPage />} />
+        <Route path="backup" element={<BackupPage />} />
         <Route path="more" element={<MorePage />} />
       </Route>
 

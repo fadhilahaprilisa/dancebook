@@ -7,6 +7,7 @@ import DashboardPage from './pages/Dashboard';
 import DataMuridPage from './pages/DataMurid';
 import AbsensiPage from './pages/Absensi';
 import NilaiRaporPage from './pages/NilaiRapor';
+import DokumentasiPage from './pages/Dokumentasi';
 import RequireAuth from './components/RequireAuth';
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
         <Route path="data-murid" element={<DataMuridPage />} />
         <Route path="absensi" element={<AbsensiPage />} />
         <Route path="nilai-rapor" element={<NilaiRaporPage />} />
-        <Route path="dokumentasi" element={<ComingSoonPage title="Dokumentasi" tahap={7} />} />
+        <Route path="dokumentasi" element={<DokumentasiPage />} />
         <Route path="agenda" element={<ComingSoonPage title="Agenda" tahap={8} />} />
         <Route path="download-csv" element={<ComingSoonPage title="Download CSV" tahap={9} />} />
         <Route path="backup" element={<ComingSoonPage title="Backup Database" tahap={9} />} />

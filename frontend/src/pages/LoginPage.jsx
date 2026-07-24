@@ -33,7 +33,7 @@ export default function LoginPage() {
       Swal.fire({
         icon: 'error',
         title: 'Login Gagal',
-        text: err.message || 'Terjadi kesalahan, silakan coba lagi.',
+        text: err.response?.data?.message || 'Terjadi kesalahan, silakan coba lagi.',
         confirmButtonColor: '#E91E63',
       });
     } finally {
@@ -61,7 +61,6 @@ export default function LoginPage() {
           </div>
 
           <form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-            {/* Email */}
             <div>
               <div className="relative">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">
@@ -87,7 +86,6 @@ export default function LoginPage() {
               )}
             </div>
 
-            {/* Password */}
             <div>
               <div className="relative">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">
@@ -115,7 +113,6 @@ export default function LoginPage() {
               )}
             </div>
 
-            {/* Remember Login */}
             <label className="flex items-center gap-2.5 cursor-pointer select-none">
               <input
                 type="checkbox"
@@ -125,7 +122,6 @@ export default function LoginPage() {
               <span className="text-sm text-on-surface-variant">Ingat saya di perangkat ini</span>
             </label>
 
-            {/* Submit */}
             <button
               type="submit"
               disabled={isSubmitting}

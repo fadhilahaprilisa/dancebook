@@ -55,10 +55,15 @@ export default function UploadModal({ isOpen, onClose, onSubmit }) {
       return;
     }
     setIsSubmitting(true);
-    await onSubmit({ title, description, activityDate, mediaType, mediaUrl: previewUrl });
-    setIsSubmitting(false);
-    resetForm();
-    onClose();
+    try {
+      await onSubmit({ title, description, activityDate, file });
+      resetForm();
+      onClose();
+    } catch (err) {
+      setError(err.response?.data?.message || 'Gagal mengunggah dokumentasi.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -77,7 +82,6 @@ export default function UploadModal({ isOpen, onClose, onSubmit }) {
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* File Picker + Preview */}
           <div>
             <label className="text-xs font-semibold text-on-surface-variant mb-1.5 block">Foto atau Video</label>
             {previewUrl ? (
@@ -111,13 +115,11 @@ export default function UploadModal({ isOpen, onClose, onSubmit }) {
             )}
           </div>
 
-          {/* Tanggal via Calendar Picker */}
           <div>
             <label className="text-xs font-semibold text-on-surface-variant mb-1.5 block">Tanggal Kegiatan</label>
             <CalendarPicker selectedDate={activityDate} onSelectDate={setActivityDate} />
           </div>
 
-          {/* Judul */}
           <div>
             <label className="text-xs font-semibold text-on-surface-variant mb-1.5 block">Judul Kegiatan</label>
             <input
@@ -129,7 +131,6 @@ export default function UploadModal({ isOpen, onClose, onSubmit }) {
             />
           </div>
 
-          {/* Deskripsi */}
           <div>
             <label className="text-xs font-semibold text-on-surface-variant mb-1.5 block">Deskripsi</label>
             <textarea

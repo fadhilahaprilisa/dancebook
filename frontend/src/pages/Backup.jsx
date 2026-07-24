@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Database, DownloadCloud, Trash2, HardDrive } from 'lucide-react';
 import Swal from 'sweetalert2';
-import { getBackupHistory, createBackup, deleteBackupEntry } from '../services/backupService';
+import { getBackupHistory, createBackup, deleteBackupEntry, downloadBackupFile } from '../services/backupService';
 
 function formatFileSize(bytes) {
   if (bytes < 1024) return `${bytes} B`;
@@ -48,11 +48,15 @@ export default function BackupPage() {
     }
   };
 
+  const handleDownload = async (entry) => {
+    await downloadBackupFile(entry.id, entry.fileName);
+  };
+
   const handleDelete = async (entry) => {
     const result = await Swal.fire({
       icon: 'warning',
       title: `Hapus riwayat "${entry.fileName}"?`,
-      text: 'Ini hanya menghapus catatan riwayat, bukan file yang sudah terunduh.',
+      text: 'File backup di server juga akan ikut dihapus.',
       showCancelButton: true,
       confirmButtonText: 'Hapus',
       cancelButtonText: 'Batal',
@@ -103,7 +107,10 @@ export default function BackupPage() {
           <div className="divide-y divide-surface-container-highest">
             {history.map((entry) => (
               <div key={entry.id} className="flex items-center justify-between gap-4 px-5 py-3.5">
-                <div className="flex items-center gap-3 min-w-0">
+                <button
+                  onClick={() => handleDownload(entry)}
+                  className="flex items-center gap-3 min-w-0 text-left hover:opacity-80 transition-opacity"
+                >
                   <div className="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center shrink-0">
                     <DownloadCloud className="w-4 h-4 text-on-primary-container" />
                   </div>
@@ -113,7 +120,7 @@ export default function BackupPage() {
                       {formatTanggal(entry.createdAt)} • {formatFileSize(entry.fileSize)}
                     </p>
                   </div>
-                </div>
+                </button>
                 <button
                   onClick={() => handleDelete(entry)}
                   className="p-2 rounded-full hover:bg-error-container/40 text-on-surface-variant hover:text-error transition-colors shrink-0"

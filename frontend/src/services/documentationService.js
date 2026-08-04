@@ -14,6 +14,11 @@ export async function createDocumentation({ title, description, activityDate, fi
 
   const response = await axiosClient.post('/documentations', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
+    // Upload foto/video butuh waktu lebih lama dari request API biasa,
+    // terutama untuk video atau koneksi lambat — beri jeda lebih longgar
+    // daripada timeout default axiosClient (60s), tapi tetap dibatasi agar
+    // tidak menggantung selamanya seperti sebelumnya.
+    timeout: 90000,
   });
   return response.data.data;
 }

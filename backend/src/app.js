@@ -5,9 +5,23 @@ const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
+// Railway (dan platform hosting lain) berjalan di balik reverse proxy.
+// Tanpa ini, req.ip / rate-limiting / secure cookie tidak akurat.
+app.set('trust proxy', 1);
+
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:5173')
+  .split(',')
+  .map((origin) => origin.trim());
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: (origin, callback) => {
+      // Izinkan request tanpa origin (mis. Postman, health check)
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      callback(new Error('Origin tidak diizinkan oleh kebijakan CORS'));
+    },
     credentials: true,
   })
 );
